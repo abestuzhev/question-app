@@ -1,3 +1,30 @@
+
+// question.js
+
+class Question {
+    static creat(question){
+        return fetch('https://question-app-850ec.firebaseio.com/questions.json', {
+            method: 'POST',
+            body: JSON.stringify(question),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(response => {
+            console.log(response);
+        })
+    }
+}
+
+// utils.js
+
+function isValid(value){
+    return value.length >= 10;
+}
+
+
+
 let form = document.getElementById('question-form');
 let input = form.querySelector('#question-form-input');
 let submitBtn = form.querySelector('#question-form-btn');
@@ -19,15 +46,13 @@ function submitEventHandler (event) {
 
         submitBtn.disabled = true;
         // Asynk request to server
-        input.value = '';
-        console.log('question', question);
+        Question.creat(question).then( () => {
+
+            input.value = '';
+            submitBtn.disabled = false;
+            console.log('question', question);
+        });
 
     }
 }
 
-
-// utils.js
-
-function isValid(value){
-    return value.length >= 10;
-}
