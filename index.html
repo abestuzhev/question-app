@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>questions</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+    <div class="questions-layout">
+        <div class="questions">
+            <div class="questions-title">Поле для ввода вопроса</div>
+            <div class="questions-form">
+                <form action="" id="question-form">
+                    <div class="questions-form__item">
+                        <label class="question-form-label" for="question-form-input">Введите вопрос</label>
+                        <input type="text" id="question-form-input" class="question-form-input">
+                    </div>
+                    <div class="questions-form__item">
+                       <button disabled type="submit" class="c-btn" id="question-form-btn">Add question</button>
+                    </div>
+                </form>
+            </div>
+            <div class="questions-title">Список вопросов:</div>
+            <div class="questions-list"></div>
+        </div>
+        
+    </div>
+
+    <script src="./js/main.js"></script>
+    
+</body>
+</html>
