@@ -15,6 +15,29 @@ class Question {
             console.log(response);
         })
     }
+
+    static getQuestion(){
+        return fetch('https://question-app-850ec.firebaseio.com/questions.json', {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            return response.json();
+        });
+        
+    }
+
+    static renderList(data){
+
+        const arrQuest = data.map
+        questionList.innerHTML = `
+            <div class="question-card">
+                <div class="question-card__title">${data}</div>
+                <div class="question-card__date"></div>
+            </div>            
+        `
+        }
 }
 
 // utils.js
@@ -28,12 +51,19 @@ function isValid(value){
 let form = document.getElementById('question-form');
 let input = form.querySelector('#question-form-input');
 let submitBtn = form.querySelector('#question-form-btn');
+let questionList = form.querySelector('.questions-list');
 
 form.addEventListener('submit', submitEventHandler);
 
 input.addEventListener('input', ()=> {
     submitBtn.disabled = !isValid(input.value);
 });
+
+Question.getQuestion().then((data)=> {
+     renderList(data);
+     
+});
+
 
 function submitEventHandler (event) {
     event.preventDefault();
