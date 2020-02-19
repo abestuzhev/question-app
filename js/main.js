@@ -17,33 +17,35 @@ class Question {
     }
 
     static getQuestion(){
-        return fetch('https://question-app-850ec.firebaseio.com/questions.json', {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
+        fetch('https://question-app-850ec.firebaseio.com/questions.json')
         .then(response => {
+            console.log(response.headers.get('Content-Type'))
             return response.json();
+        })
+        .then( (data)=> {
+            addList(data);
         });
         
-    }
-
-    static renderList(data){
-
-        const arrQuest = data.map
-        questionList.innerHTML = `
-            <div class="question-card">
-                <div class="question-card__title">${data}</div>
-                <div class="question-card__date"></div>
-            </div>            
-        `
-        }
+    }   
 }
+
 
 // utils.js
 
 function isValid(value){
     return value.length >= 10;
+}
+
+function addList (data){
+    // return `
+    // <div class="question-card">
+    //     <div class="question-card__title">${data.text}</div>
+    //     <div class="question-card__date">${data.date}</div>
+    // </div>            
+    // `
+    const arr = Object.keys(data);
+
+    console.log(arr);
 }
 
 
@@ -59,10 +61,8 @@ input.addEventListener('input', ()=> {
     submitBtn.disabled = !isValid(input.value);
 });
 
-Question.getQuestion().then((data)=> {
-     renderList(data);
-     
-});
+
+Question.getQuestion();
 
 
 function submitEventHandler (event) {
