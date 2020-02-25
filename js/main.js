@@ -56,12 +56,42 @@ function isValid(value){
     return value.length >= 10;
 }
 
+function createModal(title, content){
+    const modal = document.createElement('div');
+    modal.classList.add('modal');
+
+    modal.innerHTML = `
+        <div class="modal-title">${title}</div>
+        <div class="modal-content">${content}</div>
+    `;
+
+    document.body.appendChild(modal);
+    console.log(modal);
+}
+
+//auth.js
+function getAuthForm(){
+    return `
+    <form action="" id="question-form">
+        <div class="questions-form__item">
+            <label class="question-form-label" for="question-form-input">Введите вопрос</label>
+            <input type="text" id="question-form-input" class="question-form-input">
+        </div>
+        <div class="questions-form__item">
+            <button disabled type="submit" class="c-btn" id="question-form-btn">Add question</button>
+        </div>
+    </form>
+    `
+}
 
 
+//app.js
 let form = document.getElementById('question-form');
 let input = form.querySelector('#question-form-input');
 let submitBtn = form.querySelector('#question-form-btn');
 let questionList = form.querySelector('.questions-list');
+let allBtn = document.querySelector('.question-all__btn');
+let layout = document.querySelector('.questions-layout');
 
 form.addEventListener('submit', submitEventHandler);
 
@@ -69,10 +99,13 @@ input.addEventListener('input', ()=> {
     submitBtn.disabled = !isValid(input.value);
 });
 
+console.log('allBtn', allBtn);
+allBtn.addEventListener('click', (event) => {
+    event.preventDefault();
+    openModal();
+}); 
+
 document.addEventListener('load', Question.renderList()); 
-
-
-
 
 function submitEventHandler (event) {
     event.preventDefault();
@@ -93,5 +126,10 @@ function submitEventHandler (event) {
         });
 
     }
+}
+
+
+function openModal(){
+    createModal('Авторизация', getAuthForm());
 }
 
