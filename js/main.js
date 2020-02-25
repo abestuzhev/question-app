@@ -12,40 +12,48 @@ class Question {
         })
         .then(response => response.json())
         .then(response => {
-            console.log(response);
+            response.id = response.name;
+            return question
         })
+        .then(addToLocalStorage)
+        .then(Question.renderList);
     }
 
-    static getQuestion(){
-        fetch('https://question-app-850ec.firebaseio.com/questions.json')
-        .then(response => {
-            console.log(response.headers.get('Content-Type'))
-            return response.json();
-        })
-        .then( (data)=> {
-            addList(data);
-        });
-        
-    }   
+    static renderList(){
+        const questions = getQuestionFromLocalStorage();
+        const html = questions.length ?
+        questions.map(toCart) 
+        : `<div>Вы пока ничего не спрашивали</div>`;
+
+        const list = document.querySelector('.questions-list');
+        list.innerHTML = html;
+    }
+  
 }
 
+function toCart (question){
+    return `
+    <div class="question-card">
+    <div class="question-card__date">${new Date(question.date).toLocaleDateString()}</div>
+    <div class="question-card__text">${question.text}</div>
+    </div>
+    `
+}
+
+function addToLocalStorage (question){
+    const all = getQuestionFromLocalStorage();
+    all.push(question);
+    localStorage.setItem('question', JSON.stringify(all))
+}
+
+function getQuestionFromLocalStorage (){
+    return JSON.parse(localStorage.getItem('question') || '[]');
+}
 
 // utils.js
 
 function isValid(value){
     return value.length >= 10;
-}
-
-function addList (data){
-    // return `
-    // <div class="question-card">
-    //     <div class="question-card__title">${data.text}</div>
-    //     <div class="question-card__date">${data.date}</div>
-    // </div>            
-    // `
-    const arr = Object.keys(data);
-
-    console.log(arr);
 }
 
 
@@ -61,8 +69,9 @@ input.addEventListener('input', ()=> {
     submitBtn.disabled = !isValid(input.value);
 });
 
+document.addEventListener('load', Question.renderList()); 
 
-Question.getQuestion();
+
 
 
 function submitEventHandler (event) {
