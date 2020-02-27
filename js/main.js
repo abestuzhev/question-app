@@ -133,3 +133,40 @@ function openModal(){
     createModal('Авторизация', getAuthForm());
 }
 
+
+// modal window
+const $ = {};
+window.$ = $;
+
+
+
+
+
+function _createModal(options) {
+    const modal = document.createElement('div');
+    modal.classList.add('c-modal');
+
+    modal.insertAdjacentHtml('afterbegin', `
+
+    `);
+}
+
+
+$.modal = function(options){
+    const $modal = _createModal(options);
+    return {
+        open (){
+            $modal.classList.add('open');
+        },
+
+        close (){
+
+        }
+    }
+}
+
+
+const modal = $.modal({
+    'maxWidth': 500,
+    'close': true
+});
