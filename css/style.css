@@ -102,7 +102,7 @@ button:disabled {
 }
 
 .modal-overlay {
-    position: absolute;
+    position: fixed;
     left: 0;
     right: 0;
     top: 0;
@@ -124,7 +124,7 @@ button:disabled {
     transform: translate(-50%,-50%);
     background-color: #fff;
     border-radius: 6px;
-    box-shadow: 12px 12px 2px 1px rgba(0, 0, 0, .4);
+    box-shadow: 12px 12px 15px 1px rgba(0, 0, 0, .2);
     transition: all .2s ease-in-out;
 }
 

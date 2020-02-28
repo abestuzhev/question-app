@@ -141,7 +141,7 @@ function _createModal(options) {
         <div class="modal" style="width: ${options.width + 'px'}">
             <div class="modal-close" data-close="true"></div>
             <div class="modal-title">${options.title}</div>
-            <div class="modal-content"></div>
+            <div class="modal-content">${options.content}</div>
             <div class="modal-footer">
                 <a href="#" class="c-btn c-btn-primery">Ок</a>
                 <a href="#" class="c-btn c-btn-cancel">Отмена</a>
@@ -154,22 +154,35 @@ function _createModal(options) {
     return modal;
 }
 
-
 $.modal = function(options){
     const $modal = _createModal(options);  
-    return {
-        open (){
+
+    
+    $modal.addEventListener('click', (event) => {
+        if(event.target.dataset.close){
+            modal.close();
+        }
+        
+    });
+
+    const modal = {
+        open(){
             $modal.classList.add('open');
         },
 
-        close (){
+        close(){
             $modal.classList.remove('open');
+        },
+
+        setContent(content){
+            document.querySelector('.modal-content').innerHTML = content;
         }
     }
+
+    return modal;
 }
 
-
-const modal = $.modal({
+const listModal = $.modal({
     'width': 500,
     'title': 'Авторизация',
     'close': true,
@@ -177,13 +190,9 @@ const modal = $.modal({
     
 });
 
-document.addEventListener('click', (event)=> {
-    if(event.target.dataset.close){
-        modal.close();
-    }
-    
-})
+
 allBtn.addEventListener('click', (event) => {
     event.preventDefault();
-    modal.open();
+    listModal.open();
+    listModal.setContent('test wrap');
 }); 
