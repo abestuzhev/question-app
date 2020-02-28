@@ -72,6 +72,7 @@ button:disabled {
 }
 
 .question-all {
+    z-index: 10;
     position: fixed;
     bottom: 30px;
     right: 30px;
@@ -92,6 +93,13 @@ button:disabled {
     font-family: sans-serif;
 }
 
+.modal-layout {
+    opacity: 0;
+    z-index: -1;
+    transition: all .2s ease-in-out;
+
+}
+
 .modal-overlay {
     position: absolute;
     left: 0;
@@ -103,7 +111,7 @@ button:disabled {
     z-index: 99;
 }
 
-.modal {
+.modal {    
     position: relative;
     font-family: sans-serif;
     z-index: 100;
@@ -119,8 +127,9 @@ button:disabled {
     transition: all .2s ease-in-out;
 }
 
-.modal.open {
+.modal-layout.open {
     opacity: 1;
+    z-index: 1000;
     transition: all .2s ease-in-out;
 }
 
@@ -141,7 +150,13 @@ button:disabled {
     right: -40px;
     top: 0;
     cursor: pointer;
+    transition: all .2s ease-in-out
 
+}
+
+.modal-close:hover {
+    transform: scale(1.1);
+    transition: all .2s ease-in-out
 }
 
 .modal-close::after {

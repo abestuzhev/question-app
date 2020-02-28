@@ -99,12 +99,6 @@ input.addEventListener('input', ()=> {
     submitBtn.disabled = !isValid(input.value);
 });
 
-console.log('allBtn', allBtn);
-allBtn.addEventListener('click', (event) => {
-    event.preventDefault();
-    openModal();
-}); 
-
 document.addEventListener('load', Question.renderList()); 
 
 function submitEventHandler (event) {
@@ -129,9 +123,9 @@ function submitEventHandler (event) {
 }
 
 
-function openModal(){
-    createModal('Авторизация', getAuthForm());
-}
+// function openModal(){
+//     createModal('Авторизация', getAuthForm());
+// }
 
 
 // modal window
@@ -139,34 +133,57 @@ const $ = {};
 window.$ = $;
 
 
-
-
-
 function _createModal(options) {
     const modal = document.createElement('div');
-    modal.classList.add('c-modal');
+    modal.classList.add('modal-layout');
 
-    modal.insertAdjacentHtml('afterbegin', `
-
+    modal.insertAdjacentHTML('afterbegin', `        
+        <div class="modal" style="width: ${options.width + 'px'}">
+            <div class="modal-close" data-close="true"></div>
+            <div class="modal-title">${options.title}</div>
+            <div class="modal-content"></div>
+            <div class="modal-footer">
+                <a href="#" class="c-btn c-btn-primery">Ок</a>
+                <a href="#" class="c-btn c-btn-cancel">Отмена</a>
+            </div>
+        </div>
+        <div class="modal-overlay" data-close="true"></div>        
     `);
+
+    document.body.appendChild(modal);
+    return modal;
 }
 
 
 $.modal = function(options){
-    const $modal = _createModal(options);
+    const $modal = _createModal(options);  
     return {
         open (){
             $modal.classList.add('open');
         },
 
         close (){
-
+            $modal.classList.remove('open');
         }
     }
 }
 
 
 const modal = $.modal({
-    'maxWidth': 500,
-    'close': true
+    'width': 500,
+    'title': 'Авторизация',
+    'close': true,
+    'content': 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsam non rerum, provident vero magni adipisci ducimus sint dolorem excepturi, itaque tempo.'
+    
 });
+
+document.addEventListener('click', (event)=> {
+    if(event.target.dataset.close){
+        modal.close();
+    }
+    
+})
+allBtn.addEventListener('click', (event) => {
+    event.preventDefault();
+    modal.open();
+}); 
