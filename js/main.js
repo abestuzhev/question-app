@@ -1,6 +1,9 @@
 
 // question.js
 
+let form = document.getElementById('question-form');
+let questionList = form.querySelector('.questions-list');
+
 class Question {
     static creat(question){
         return fetch('https://question-app-850ec.firebaseio.com/questions.json', {
@@ -16,17 +19,16 @@ class Question {
             return question
         })
         .then(addToLocalStorage)
-        .then(Question.renderList);
+        .then(Question.renderList(questionList));
     }
 
-    static renderList(){
+    static renderList(htmlBlock){
         const questions = getQuestionFromLocalStorage();
         const html = questions.length ?
         questions.map(toCart) 
         : `<div>Вы пока ничего не спрашивали</div>`;
-
-        const list = document.querySelector('.questions-list');
-        list.innerHTML = html;
+        
+        htmlBlock.innerHTML = html;
     }
   
 }
@@ -86,10 +88,8 @@ function getAuthForm(){
 
 
 //app.js
-let form = document.getElementById('question-form');
 let input = form.querySelector('#question-form-input');
 let submitBtn = form.querySelector('#question-form-btn');
-let questionList = form.querySelector('.questions-list');
 let allBtn = document.querySelector('.question-all__btn');
 let layout = document.querySelector('.questions-layout');
 
@@ -99,7 +99,7 @@ input.addEventListener('input', ()=> {
     submitBtn.disabled = !isValid(input.value);
 });
 
-document.addEventListener('load', Question.renderList()); 
+// document.addEventListener('load', Question.renderList(questionList)); 
 
 function submitEventHandler (event) {
     event.preventDefault();
@@ -194,5 +194,35 @@ const listModal = $.modal({
 allBtn.addEventListener('click', (event) => {
     event.preventDefault();
     listModal.open();
-    listModal.setContent('test wrap');
+    listModal.setContent(Question.renderList(questionList));
 }); 
+
+// bind - привязывает контекст
+
+function getLog(){
+    console.log('get', this);
+}
+
+
+const user = {
+    name: 'John',
+    age: 55,
+    say: getLog,
+    sayHelloWindow: getLog.bind(document),
+    showInfo: function(work, phone){
+        console.log(`Name is ${this.name}`);
+        console.log(`Work is ${work}`);
+        console.log(`Work is ${phone}`);
+    }
+}
+
+
+const girl = {
+    name: 'Taniy',
+    age: '18'
+}
+
+const girlShowInfo = user.showInfo.bind(girl);
+const fngirlShowInfo = girlShowInfo('front', '7950654654');
+
+// замыкания
